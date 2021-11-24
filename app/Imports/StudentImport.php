@@ -2,25 +2,15 @@
 
 namespace App\Imports;
 
-use App\Models\Student;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\withHeadingRow;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class StudentImport implements ToModel, withHeadingRow
+class StudentImport implements WithMultipleSheets
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+    public function sheets(): array
     {
-        return new Student([
-            //
-            'name'=> $row['name'],
-            'email'=> $row['email'],
-            'age'=> $row['age'],
-            'university'=> $row['university'],
-        ]);
+        return [
+            'student' => new StudentSheetImport(),
+            'company' => new CompanySheetImport(),
+        ];
     }
 }
